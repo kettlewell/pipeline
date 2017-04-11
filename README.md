@@ -41,5 +41,37 @@ docker run -it -p 3000:3000 -p 3001:3001 \
        --name ng2 kettlewell:angular2
 ```
 Next steps:
-1. decouple `npm install` from the host system
-2. get this working with docker-compose.yml
+1. decouple `npm install` from the host system -- DONE?
+2. get this working with docker-compose.yml -- DONE
+3. Create a script that can run all the tests
+   + socket.io
+   + real-time spark
+   + regular spark
+   Just a simple script
+4. Pull in images for the following, and understand how each works / connects:
+   + kafka
+   + spark
+   + cassandra
+   + socket.io
+5. Create dev/prod environments for how the code gets mounted
+   IE. mount host system in dev, don't mount it in prod
+       prod would be for end-users, dev would be for testing/building this pipeline
+   EDIT: Just get a dev environment going for now...
+
+
+To further refine the above:
+
+1. First get socket.io -> angular2 working
+
+2. After that get the kafka -> spark -> file -> angular2 working
+
+3. Then get kafka -> spark -> cassandra -> angular2 working
+
+4. Then get kafka -> streaming spark -> cassandra -> angular2 working
+
+Also...
+
+Might need to create a number pumper of random numbers to simulate RT data.
+
+Alternatively, could use something like iostat, vmstat, sar or
+something in /proc that creates new data every few seconds

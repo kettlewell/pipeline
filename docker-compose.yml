@@ -1,7 +1,10 @@
-frontend:
-  build: ./angular2
-  ports:
-   - 8080:80
-  volumes:
-   - ./angular2:/var/www/angular
-   - ./nginx:/etc/nginx
+version: '3'
+
+services:
+  angular2:
+    build: ./angular2
+    ports:
+      - 8080:3000
+      - 8081:3001
+    volumes:
+      - ./angular2:/angular2
