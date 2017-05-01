@@ -75,3 +75,95 @@ Might need to create a number pumper of random numbers to simulate RT data.
 
 Alternatively, could use something like iostat, vmstat, sar or
 something in /proc that creates new data every few seconds
+
+## Appended Notes:
+
+So after doing some research and thinking about things,
+it's clear to me that this project ( and most data pipelines really )
+follow this path:
+
+1. Input Source
+2. Message Queue / Buffer
+3. Processing
+4. Output / Results Storage
+5. Display
+
+This suggests to me that I could have a container for each stage
+in the processing pipeline, with each stage being capable of being
+horizontally scalable to add additional compute / storage nodes,
+but generally not needed for a prototyping system like this.
+
+So thinking out loud...
+
+I think that I can create a directory for each stage, and inside
+each stage we can address the specifics of which component(s) are
+to be built on each container.
+
+So rough draft outline:
+
+1. Input
+   a. static files
+   b. random number stream
+   c. streaming system data
+2. Queue
+   a. Kafka
+3. Processing
+   a. Spark
+   b. Spark Streaming
+4. Output
+   a. files
+   b. Cassandra
+5. Display
+   a. node.js
+   b. express server
+   c. angular
+   d. d3.js
+
+
+To me, the idea to build this up, would be to start small
+with the static/hard coded data first, roughly in this order:
+
+1. Display framework
+   Get an express server running that has the ability to work with routes
+   and create some stub routes:
+       a. /  ( list of all links available )
+       b. /socket.io/monitoring
+       c. /socket.io/random-numbers
+       d. /spark/cassandra/census-data
+       e. /spark/disk/census-data
+       f. /spark-streaming/disk/random-numbers
+       g. /spark-streaming/cassandra/random-numbers
+       h. /spark-streaming/disk/monitoring
+       i. /spark-streaming/cassandra/monitoring
+
+    OK... I like this ... the 'file' keyword was changed to 'disk'
+    and I changed the placeholder 'static-file' to 'census-data'
+    so that it resembles a real data set, and .. voila!
+
+    Those look like 8 good starting points to test enough scenarios to get
+    a pretty good feel for how everything works together in a variety of fashions.
+
+
+2. So after the Display framework is started, work with the socket.io framework, to get the data
+   flowing from Input to Display. The point of this excercise isn't really to process data, but
+   to show that data can stream from once source to another and be displayed in real-time. I have
+   some of the monitoring socket.io tested, so let's start with that and get it displaying through
+   a d3.js framework. Don't worry about the fine points of the display yet. That will be very last.
+
+3. Next we want to work on the Spark -> File -> Display
+   We will need to create Spark and Storage docker containers, and make sure that Spark
+   can read data from the Input container, and write data to the Output container.
+
+   Need a way to submit jobs to spark. From the Input container? Or.. ???
+
+   Need to select a data file ( census data would work ), and create a mock analysis
+   ( mead, std dev would work to start ) just to get the concept running.
+
+4. Update the Angular app to read the Spark data from the Output directory and display it in
+   a d3.js chart.
+
+5. Spark streaming will require a message buffer, so need to build the Queue container with
+   Kafka in it. And get the pipeline going from Input -> Queue -> Spark Streaming -> File -> Display
+
+   
+   
