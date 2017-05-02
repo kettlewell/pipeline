@@ -143,6 +143,9 @@ with the static/hard coded data first, roughly in this order:
     Those look like 8 good starting points to test enough scenarios to get
     a pretty good feel for how everything works together in a variety of fashions.
 
+   Edit:  One last thought on this ... might be easier to just have
+   /demo1, /demo2, etc, and an index page that lists out what each URL
+   is accomplishing... probably the easiest and least complicated way.
 
 2. So after the Display framework is started, work with the socket.io framework, to get the data
    flowing from Input to Display. The point of this excercise isn't really to process data, but
@@ -164,6 +167,3 @@ with the static/hard coded data first, roughly in this order:
 
 5. Spark streaming will require a message buffer, so need to build the Queue container with
    Kafka in it. And get the pipeline going from Input -> Queue -> Spark Streaming -> File -> Display
-
-   
-   

@@ -1,10 +1,30 @@
 version: '3'
 
 services:
-  angular2:
-    build: ./angular2
+  input:
+    build: ./Input
+    image: pipeline/input
+    container_name: pipeline_input
+  queue:
+    build: ./Queue
+    image: pipeline/queue
+    container_name: pipeline_queue
+    depends_on:
+      - input
+  processing:
+    build: ./Processing
+    image: pipeline/processing
+    container_name: pipeline_processing
+  output:
+    build: ./Output
+    image: pipeline/output
+    container_name: pipeline_output
+  display:
+    build: ./Display
+    image: pipeline/display
+    container_name: pipeline_display
     ports:
       - 8080:3000
       - 8081:3001
     volumes:
-      - ./angular2:/angular2
+      - ./Display/angular2:/angular2
