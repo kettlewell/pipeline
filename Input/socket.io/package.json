@@ -1,11 +1,14 @@
 {
-  "name": "socket.io monitoring client",
+  "name": "monitoring-client",
   "version": "0.0.1",
   "private": "true",
   "dependencies": {
     "express": "4.14.0",
     "resmon": "0.0.3",
-    "socket.io": "1.4.8",
-    "systeminformation": "^3.17.2"
+    "socket.io": "1.4.8"
+  },
+  "description": "an example monitoring client",
+  "scripts": {
+     "start": "node client"
   }
 }
