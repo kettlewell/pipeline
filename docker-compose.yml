@@ -24,6 +24,13 @@ services:
     build: ./Queue
     image: pipeline/queue
     container_name: pipeline_queue
+    hostname: kafka
+    environment:
+      ADVERTISED_HOST: kafka
+      ADVERTISED_PORT: 9092
+    ports:
+      - "9092:9092"
+      - "2181:2181"
 #    depends_on:
 #      - pipeline_input
 #      - pipeline_display

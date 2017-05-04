@@ -5,6 +5,7 @@ RUN yum install -y https://archive.cloudera.com/cdh5/one-click-install/redhat/7/
 
 # Epel Repo
 RUN yum install -y epel-release
+
 RUN yum -y update;
 RUN yum -y clean all;
 
@@ -13,12 +14,11 @@ RUN yum install -y  zookeeper wget bzip2  unzip java-1.8.0-openjdk java-1.8.0-op
 
 RUN yum -y clean all;
 
-
 WORKDIR /
 
 #Install Kafka
-COPY ./kafka_2.11-0.10.0.0.tgz /
-#RUN wget http://apache.belnet.be/kafka/0.10.0.0/kafka_2.11-0.10.0.0.tgz
+#COPY ./kafka_2.11-0.10.0.0.tgz /
+RUN wget http://apache.belnet.be/kafka/0.10.0.0/kafka_2.11-0.10.0.0.tgz
 RUN tar -zxvf kafka_2.11-0.10.0.0.tgz
 RUN mv kafka_2.11-0.10.0.0 /kafka
 RUN mkdir -p /kafka/log
@@ -29,8 +29,8 @@ ENV PATH /kafka/bin:$PATH
 RUN pip install kafka-python supervisor
 
 #Startup (start SSH, Cassandra, Zookeeper, Kafka producer)
-ADD startup_script.sh /usr/bin/startup_script.sh
-RUN chmod +x /usr/bin/startup_script.sh
+#ADD startup_script.sh /usr/bin/startup_script.sh
+#RUN chmod +x /usr/bin/startup_script.sh
 
 #Environment variables for Spark and Java
 ADD setenv.sh /root/setenv.sh
@@ -38,7 +38,7 @@ RUN echo . /root/setenv.sh >> .bashrc
 
 ADD start-kafka.sh /usr/bin/start-kafka.sh
 
-ADD supervisor.conf /etc/supervisord.conf
+ADD supervisord.conf /etc/supervisord.conf
 
 # Supervisor config
 ADD kafka.conf zookeeper.conf /etc/supervisord/conf.d/
@@ -46,7 +46,6 @@ ADD kafka.conf zookeeper.conf /etc/supervisord/conf.d/
 # 2181 is zookeeper, 9092 is kafka
 EXPOSE 2181 9092
 ENV KAFKA_HOME /kafka
-RUN echo_supervisord_conf
 CMD ["/usr/bin/supervisord", "-n"]
 #ENTRYPOINT ["/bin/bash"]
 

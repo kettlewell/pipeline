@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo "BLAH BLAH BLAH"
+
 # Optional ENV variables:
 # * ADVERTISED_HOST: the external ip for the container, e.g. `docker-machine ip \`docker-machine active\``
 # * ADVERTISED_PORT: the external port for Kafka, e.g. 9092
@@ -35,12 +37,12 @@ fi
 # Set the zookeeper chroot
 if [ ! -z "$ZK_CHROOT" ]; then
     # wait for zookeeper to start up
-    until /usr/share/zookeeper/bin/zkServer.sh status; do
+    until /usr/lib/zookeeper/bin/zkServer.sh status; do
       sleep 0.1
     done
 
     # create the chroot node
-    echo "create /$ZK_CHROOT \"\"" | /usr/share/zookeeper/bin/zkCli.sh || {
+    echo "create /$ZK_CHROOT \"\"" | /usr/lib/zookeeper/bin/zkCli.sh || {
         echo "can't create chroot in zookeeper, exit"
         exit 1
     }
