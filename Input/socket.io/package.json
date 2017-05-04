@@ -9,6 +9,6 @@
   },
   "description": "an example monitoring client",
   "scripts": {
-     "start": "node client"
+     "start": "node client.js"
   }
 }

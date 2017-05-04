@@ -13,4 +13,5 @@ COPY ./angular2 /angular2
 EXPOSE 3000
 EXPOSE 3001
 
-CMD ["npm","start"]
+#CMD ["npm","start"]
+ENTRYPOINT ["npm","start"]
