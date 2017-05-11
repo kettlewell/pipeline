@@ -1,4 +1,10 @@
-FROM node:7.8
+# FROM centos:centos7
+FROM pipeline/image
+
+# RUN yum -y update && yum clean all
+RUN yum -y install epel-release #  && yum clean all
+RUN yum -y install nodejs npm   # && yum clean all
+
 
 RUN mkdir /angular2
 WORKDIR /angular2

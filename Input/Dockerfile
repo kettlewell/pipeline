@@ -1,13 +1,9 @@
-FROM centos:centos7
+#FROM centos:centos7
+FROM pipeline/image
 
-RUN yum -y update; yum clean all
-RUN yum -y install epel-release; yum clean all
-RUN yum -y install nodejs npm nodejs-typescript sysstat wget tar bzip2 unzip ; yum clean all
-
-#FROM node:7.8
-
-#RUN apt-get update && apt-get -y upgrade
-#RUN apt-get -y install sysstat wget
+#RUN yum -y update; yum clean all
+RUN yum -y install epel-release # ; yum clean all
+RUN yum -y install nodejs npm nodejs-typescript sysstat wget tar bzip2 unzip # ; yum clean all
 
 # Root user
 RUN echo "root:123456" | chpasswd

@@ -1,3 +1,17 @@
+# Ignore the executables
+Input/Anaconda2-4.1.1-Linux-x86_64.sh
+Queue/kafka_2.11-0.10.0.0.tgz
+Image/centosmin-7.tar.gz
+
+# Ignore the generated Dockerfile
+Image/buildcontainer/Dockerfile
+
+# Ignore the cache directory
+Image/cache
+
+# ignore emacs save files
+*~
+
 .idea
 node_modules
 jspm_packages
