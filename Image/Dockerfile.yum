@@ -1,0 +1,5 @@
+FROM scratch
+ADD centos-7-yum-min.tar.gz /
+LABEL name="pipeline centos 7 yum minimal"
+
+CMD ["/bin/bash"]

@@ -1,6 +1,8 @@
 #!/bin/bash
-target=${1:-centos}
-releasever=${2:-}
+whichyum=${1:-yum}  # yum or microyum
+target=${2:-centos} # centos or fedora
+releasever=${3:-} 
+
 if test -z ${releasever}; then
     case $target in
 	centos)
@@ -12,7 +14,7 @@ if test -z ${releasever}; then
 fi
 
 sed -e "s,\@target\@,${target}:${releasever},g" < buildcontainer/Dockerfile.in > buildcontainer/Dockerfile
-buildimgname=pipeline/${target}-builder:${releasever}
+buildimgname=pipeline/${target}-builder-${whichyum}:${releasever}
 (cd buildcontainer && docker build -t ${buildimgname} .)
 
-docker run --privileged --net=host --rm -v $(pwd):/srv --workdir /srv ${buildimgname} /srv/build-via-yum --target "${target}" --releasever=${releasever}
+docker run --privileged --net=host --rm -v $(pwd):/srv --workdir /srv ${buildimgname} /srv/build-via-yum.py --target "${target}" --releasever=${releasever} --whichyum=${whichyum}

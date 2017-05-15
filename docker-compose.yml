@@ -5,6 +5,20 @@ services:
     build: ./Image
     image: pipeline/image
     container_name: pipeline_image
+
+  pipeline_image_yum:
+    build: 
+      context: ./Image
+      dockerfile: Dockerfile.yum
+    image: pipeline/image_yum
+    container_name: pipeline_image_yum
+
+  pipeline_image_microyum:
+    build:
+       context: ./Image
+       dockerfile: Dockerfile.microyum  
+    image: pipeline/image_microyum
+    container_name: pipeline_image_microyum
     
   pipeline_input:
     build: ./Input

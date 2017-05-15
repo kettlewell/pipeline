@@ -11,7 +11,9 @@ RUN yum install -y epel-release
 # RUN yum -y clean all;
 
 # Install basic tools
-RUN yum install -y  zookeeper wget bzip2  unzip java-1.8.0-openjdk java-1.8.0-openjdk-devel bind-utils python-pip tar gzip
+RUN yum install -y  zookeeper wget bzip2  unzip \
+                    java-1.8.0-openjdk java-1.8.0-openjdk-devel \
+		    bind-utils python-pip tar gzip
 
 # RUN yum -y clean all;
 

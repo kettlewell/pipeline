@@ -1,0 +1,6 @@
+FROM scratch
+
+ADD centos-7-microyum-min.tar.gz /
+LABEL name="pipeline centos 7 microyum minimal"
+
+CMD ["/bin/bash"]

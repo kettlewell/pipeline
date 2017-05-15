@@ -7,7 +7,9 @@ ADD src/datastax.repo /etc/yum.repos.d/datastax.repo
 
 # Install Java, Install packages (sshd + supervisord + monitoring tools + cassandra)
 RUN yum update -y
-RUN yum install -y yum-plugin-ovl wget tar openssh-server openssh-client supervisor sysstat sudo which openssl hostname java-1.8.0-openjdk-headless dsc22 
+RUN yum install -y yum-plugin-ovl wget tar openssh-server \
+                   openssh-client supervisor sysstat sudo which \
+		   openssl hostname java-1.8.0-openjdk-headless dsc22 
 RUN yum clean all
 
 # Configure SSH server

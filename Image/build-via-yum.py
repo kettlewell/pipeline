@@ -18,16 +18,20 @@ def run_sync(argv, **kwargs):
 parser = argparse.ArgumentParser(description='Create base image')
 parser.add_argument('--target', action='store', help='centos or fedora', required=True)
 parser.add_argument('--releasever', action='store', help='Release version', required=True)
+parser.add_argument('--whichyum', action='store', help='yum or microyuminst', required=True)
 
 args = parser.parse_args()
 if args.target == 'centos':
-    cmd=['yum']
+    if args.whichyum == 'microyum':
+        cmd=['yum']
+    else:
+        cmd=['yum']
 elif args.target == 'fedora':
     cmd=['dnf', '--setopt=install_weak_deps=False']
 else:
     fatal("Unknown target {}".format(args.target))
 
-imgname = args.target + 'min'
+imgname = args.target + '-' + args.releasever + '-' + args.whichyum + '-min'
 tempdir = tempfile.mkdtemp('dockerbase')
 root = tempdir + '/root'
 
@@ -38,19 +42,25 @@ try:
                    'override_install_langs=en',
                    'reposdir={}/repos-{}'.format(os.getcwd(), args.target)]:
         cmd.append('--setopt=' + setopt)
-
-    cmd.extend(['-y', '--releasever=' + args.releasever,
-                '--installroot={}'.format(root),
-                'install',
-                #'micro-yuminst', '{}-release'.format(args.target)])
-                 'yum','{}-release'.format(args.target)])
+        
+    if args.whichyum == 'microyum':
+        cmd.extend(['-y', '--releasever=' + args.releasever,
+            '--installroot={}'.format(root),
+            'install',
+            'micro-yuminst', '{}-release'.format(args.target)])
+    else:
+        cmd.extend(['-y', '--releasever=' + args.releasever,
+            '--installroot={}'.format(root),
+            'install',
+            'yum','{}-release'.format(args.target)])
+        
     run_sync(cmd)
     # We need to run this in target context in the general case       
     run_sync(['install', '-m', '0755', 'locales.sh', '{}/tmp'.format(root)])
     run_sync(['chroot', root, '/tmp/locales.sh'])
     run_sync(['./postprocess.sh', root])
 
-    tarname = '{}-{}.tar.gz'.format(imgname, args.releasever)
+    tarname = '{}.tar.gz'.format(imgname)
     try:
         os.unlink(tarname)
     except:
