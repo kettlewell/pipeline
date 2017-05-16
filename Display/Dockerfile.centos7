@@ -1,0 +1,23 @@
+#
+# Output - Angular / Nodejs
+
+FROM centos:centos7
+
+RUN yum -y update && yum clean all
+RUN yum -y install epel-release  && yum clean all
+RUN yum -y install nodejs npm  && yum clean all
+
+RUN mkdir /angular2
+WORKDIR /angular2
+
+COPY angular2/package.json /angular2
+
+RUN npm install
+
+COPY ./angular2 /angular2
+
+EXPOSE 3000
+EXPOSE 3001
+
+#CMD ["npm","start"]
+ENTRYPOINT ["npm","start"]

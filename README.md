@@ -168,17 +168,9 @@ with the static/hard coded data first, roughly in this order:
 5. Spark streaming will require a message buffer, so need to build the Queue container with
    Kafka in it. And get the pipeline going from Input -> Queue -> Spark Streaming -> File -> Display
 
+## Notes on minimal images
+After spending a few days ( week ) on working with a minimal image of centos, for this project
+it's just not worth the effort because it was getting negated with the dependencies of all the
+tools we're installing ( spark / kafka / R / cassandra / etc )
 
-# Size comparisons
-
-## With system Yum
-[matt@d1 pipeline]$ docker images
-REPOSITORY            TAG                 IMAGE ID            CREATED             SIZE
-pipeline/queue        latest              03b8bce828ca        19 minutes ago      628 MB
-pipeline/output       latest              47ace4de18de        20 minutes ago      608 MB
-pipeline/processing   latest              cb58b6f92217        21 minutes ago      2.52 GB
-pipeline/input        latest              cdf6dc7c2dba        36 minutes ago      2.54 GB
-pipeline/display      latest              aef7b7ff60fe        40 minutes ago      602 MB
-pipeline/image        latest              cbec1a4e823c        41 minutes ago      105 MB
-
-## With micro-yuminst
+So for this project, I'll just use the base centos:centos7 image

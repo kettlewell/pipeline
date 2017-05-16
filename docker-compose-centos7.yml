@@ -1,37 +1,28 @@
 version: '2'
 
 services:
-  pipeline_image:
-    build: ./Image
-    image: pipeline/image
-    container_name: pipeline_image
-
-  pipeline_image_yum:
-    build: 
-      context: ./Image
-      dockerfile: Dockerfile.yum
-    image: pipeline/image_yum
-    container_name: pipeline_image_yum
-
-  pipeline_image_microyum:
-    build:
-       context: ./Image
-       dockerfile: Dockerfile.microyum  
-    image: pipeline/image_microyum
-    container_name: pipeline_image_microyum
+#  pipeline_image_centos7:
+#    build: 
+#      context: ./Image
+#      dockerfile: Dockerfile.centos7
+#    image: pipeline/image_centos7
+#    container_name: pipeline_image_centos7
     
   pipeline_input:
-    build: ./Input
+    build:
+      context: ./Input
+      dockerfile: Dockerfile.centos7
     image: pipeline/input
     container_name: pipeline_input
     ports:
       - 8888:8888
     depends_on:
       - pipeline_display
-      - pipeline_image
 
   pipeline_display:
-    build: ./Display
+    build:
+      context: ./Display
+      dockerfile: Dockerfile.centos7
     image: pipeline/display
     container_name: pipeline_display
     ports:
@@ -39,11 +30,11 @@ services:
       - 8081:3001
     volumes:
       - ./Display/angular2:/angular2
-    depends_on:
-      - pipeline_image
 
   pipeline_queue:
-    build: ./Queue
+    build:
+      context: ./Queue
+      dockerfile: Dockerfile.centos7
     image: pipeline/queue
     container_name: pipeline_queue
     hostname: kafka
@@ -57,20 +48,21 @@ services:
       - pipeline_input
       - pipeline_display
       - pipeline_processing
-      - pipeline_image
       
   pipeline_processing:
-    build: ./Processing
+    build:
+      context: ./Processing
+      dockerfile: Dockerfile.centos7
     image: pipeline/processing
     container_name: pipeline_processing
     depends_on:
       - pipeline_display
-      - pipeline_image
       
   pipeline_output:
-    build: ./Output
+    build:
+      context: ./Output
+      dockerfile: Dockerfile.centos7
     image: pipeline/output
     container_name: pipeline_output
     depends_on:
       - pipeline_display
-      - pipeline_image
